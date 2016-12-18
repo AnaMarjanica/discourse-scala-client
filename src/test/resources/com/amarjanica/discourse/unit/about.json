@@ -1,0 +1,27 @@
+{
+  "about": {
+    "stats": {
+      "topic_count": 0,
+      "post_count": 0,
+      "user_count": 0,
+      "topics_7_days": 0,
+      "topics_30_days": 0,
+      "posts_7_days": 0,
+      "posts_30_days": 0,
+      "users_7_days": 0,
+      "users_30_days": 0,
+      "active_users_7_days": 0,
+      "active_users_30_days": 0,
+      "like_count": 0,
+      "likes_7_days": 0,
+      "likes_30_days": 0
+    },
+    "description": "",
+    "title": "Forum",
+    "locale": "en",
+    "version": "1.0.0",
+    "https": false,
+    "moderators": [],
+    "admins": []
+  }
+}

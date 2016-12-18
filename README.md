@@ -1,2 +1,1 @@
-# discourse-scala-client
-Discourse client for Scala
+# Discourse API client for scala
