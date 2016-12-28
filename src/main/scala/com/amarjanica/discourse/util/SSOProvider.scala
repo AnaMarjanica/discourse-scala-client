@@ -1,10 +1,11 @@
 package com.amarjanica.discourse.util
 
+import java.nio.charset.StandardCharsets
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 import com.amarjanica.discourse.api.models.{SSOContext, SSOUserRequest, SSOUserResult, SignatureNotMatchedException}
-import java.util.Base64
+import javax.xml.bind.DatatypeConverter;
 /**
  * Helper class for providing single sign on integration with Discourse.
  *
@@ -35,26 +36,27 @@ class SSOProvider(ctx: SSOContext) {
 
   def provide(req: SSOUserRequest): SSOUserResult = {
     val signedPayload = signPayload(ctx.payload)
-    if (signedPayload == ctx.signature) {
-      val oldPayload = new String(Base64.getDecoder.decode(ctx.payload.getBytes))
+    if (signedPayload.equalsIgnoreCase(ctx.signature)) {
+      val oldPayload = new String(DatatypeConverter.parseBase64Binary(ctx.payload))
       val newPayload = s"$oldPayload&${req.queryParameters}"
-      val base64String = Base64.getEncoder.encodeToString(newPayload.getBytes("UTF-8"))
+      val base64String = DatatypeConverter.printBase64Binary(newPayload.getBytes(StandardCharsets.UTF_8))
       SSOUserResult(base64String, signPayload(base64String))
     } else {
-      throw SignatureNotMatchedException(s"SSO ${ctx.payload}, signature $signedPayload did not match signature ${ctx.signature}!")
+      throw SignatureNotMatchedException(
+        s"SSO ${ctx.payload}, signature $signedPayload did not match signature ${ctx.signature}!")
     }
   }
 
   private[this] def calculateRFC2104HMAC(data: String, key: String): String = {
     val HMAC_SHA1_ALGORITHM = "HmacSHA256"
     val mac = Mac.getInstance(HMAC_SHA1_ALGORITHM)
-    val signingKey = new SecretKeySpec(key.getBytes("UTF-8"), HMAC_SHA1_ALGORITHM)
+    val signingKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), HMAC_SHA1_ALGORITHM)
     mac.init(signingKey)
     mac.doFinal(data.getBytes)
-    bytesToHex(mac.doFinal(data.getBytes("UTF-8")))
+    bytesToHex(mac.doFinal(data.getBytes(StandardCharsets.UTF_8)))
   }
 
   private[this] def signPayload(payload: String): String = calculateRFC2104HMAC(payload, ctx.secret)
 
-  private[this] def bytesToHex(bytes: Array[Byte]) = bytes.map("%02X" format _).mkString
+  private[this] def bytesToHex(bytes: Array[Byte]) = bytes.map("%02X" format _).mkString.toLowerCase
 }

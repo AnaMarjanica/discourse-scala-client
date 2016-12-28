@@ -6,7 +6,7 @@ trait HasQueryParameters { self: HasParameters =>
 
   val queryParameters = {
     val sb = new StringBuilder()
-    parameters.foldLeft(sb) {
+    val qs = parameters.foldLeft(sb) {
       case (agg, (key, value)) =>
         if (Option(value).isDefined) {
           agg.append(key)
@@ -16,6 +16,8 @@ trait HasQueryParameters { self: HasParameters =>
         } else {
           agg
         }
-    }.toString().init
+    }.toString()
+
+    if (qs.isEmpty) qs else qs.init
   }
 }
