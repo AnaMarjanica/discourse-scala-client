@@ -6,7 +6,7 @@ organization := "com.amarjanica"
 
 scalaVersion := "2.11.8"
 
-crossScalaVersions := List("2.11.8")
+crossScalaVersions := List("2.10.6", "2.11.8", "2.12.0")
 
 resolvers += "Central" at "http://central.maven.org/maven2"
 
