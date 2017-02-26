@@ -10,7 +10,7 @@ case class SearchResponse (
   @JsonProperty("grouped_search_result")
   groupedSearchResult: GroupedSearchResult
 )
-case class SearchResponseTopic(
+class SearchResponseTopic(
   id: Long,
   title: String,
   @JsonProperty("fancy_title")
@@ -28,10 +28,10 @@ case class SearchResponseTopic(
   createdAt: OffsetDateTime,
   @JsonProperty("last_posted_at")
   lastPostedAt: OffsetDateTime,
-  bumped: Boolean,
-  @JsonProperty("bumped_at")
-  bumpedAt: OffsetDateTime,
-  unseen: Boolean,
+//  bumped: Boolean,
+//  @JsonProperty("bumped_at")
+//  bumpedAt: OffsetDateTime,
+//  unseen: Boolean,
   pinned: Boolean,
   unpinned: Boolean,
   visible: Boolean,
@@ -42,18 +42,18 @@ case class SearchResponseTopic(
   views: Int,
   @JsonProperty("like_count")
   likeCount: Int,
-  @JsonProperty("has_summary")
-  hasSummary: Boolean,
-  archetype: String,
+//  @JsonProperty("has_summary")
+//  hasSummary: Boolean,
+//  archetype: String,
   @JsonProperty("last_poster_username")
   lastPosterUsername: Option[String] = None,
   @JsonProperty("category_id")
   categoryId: Option[Int] = None,
   @JsonProperty("pinned_globally")
   pinnedGlobally: Boolean,
-  tags: List[String],
-  @JsonProperty("has_accepted_answer")
-  hasAcceptedAnswer: Boolean
+  tags: List[String]
+//  @JsonProperty("has_accepted_answer")
+//  hasAcceptedAnswer: Boolean
 )
 
 case class SearchResponsePost(
