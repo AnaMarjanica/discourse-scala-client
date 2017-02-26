@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-import com.amarjanica.discourse.api.models.{SSOContext, SSOUserRequest, SSOUserResult, SignatureNotMatchedException}
+import com.amarjanica.discourse.models.{SSOContext, SSOUserRequest, SSOUserResult, SignatureNotMatchedException}
 import javax.xml.bind.DatatypeConverter;
 /**
  * Helper class for providing single sign on integration with Discourse.

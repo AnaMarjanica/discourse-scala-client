@@ -12,9 +12,10 @@ class ApiKeySpec extends Specification with BaseSpec {
 
   def testListApiKeys = {
     val discourseClient = client("api.json")
-    val res = discourseClient.listApiKeys()
 
-    (res.size shouldEqual 1) and
+    val res = discourseClient.apiKeyApi.list()
+
+    (res.length shouldEqual 1) and
     (res.head.key shouldEqual "test_d7fd0429940") and
     (res.head.user.isDefined should beTrue)
   }
@@ -22,12 +23,12 @@ class ApiKeySpec extends Specification with BaseSpec {
   def testCreateApiKey = {
     val discourseClient = client("generate_api_key.json")
 
-    val res = discourseClient.generateApiKey(1)
+    val res = discourseClient.apiKeyApi.generate(1)
 
     (res.id shouldEqual 5) and
     (res.user.isDefined should beTrue)
   }
 
   def testDeleteApiKey =
-    client().revokeUserApiKey(1) should beTrue
+    client().apiKeyApi.revoke(1) should beTrue
 }

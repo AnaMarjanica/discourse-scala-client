@@ -11,7 +11,7 @@ class SearchSpec extends Specification with BaseSpec {
   def testSearchQuery = {
     val discourseClient = client("search.json")
 
-    val result = discourseClient.searchQuery("test", Map.empty[String, String])
+    val result = discourseClient.searchApi.searchQuery("test")
 
     (result.posts should beEmpty) and
     (result.topics should beEmpty) and

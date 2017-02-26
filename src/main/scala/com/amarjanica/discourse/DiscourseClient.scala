@@ -1,29 +1,44 @@
 package com.amarjanica.discourse
 
-import com.amarjanica.discourse.api.models.Credentials
 import com.amarjanica.discourse.api._
 import com.amarjanica.discourse.util.SerializableAsJson
 import com.squareup.okhttp.Request
-import com.typesafe.scalalogging.StrictLogging
 
-/**
-  * Client for discourse forum api requests
-  * @param endPoint discourse site url e.g. http://discourse.mysite.com
-  * @param credentials api_username and api_key
-  */
-class DiscourseApiClient(
-    endPoint: String,
-    val credentials: Option[Credentials] = None,
-    httpClient: BaseHttpClient = new BaseHttpClient(readTimeoutSec = 10, writeTimeoutSec = 10)
-) extends StrictLogging
-  with WithApiKey
-  with WithBadges
-  with WithCategories
-  with WithNotifications
-  with WithPosts
-  with WithSearch
-  with WithTopics
-  with WithUsers {
+/** Client for discourse api requests
+  *
+  * @see <a href="https://meta.discourse.org/t/discourse-api-documentation/22706">Discourse Api Documentation.</a>
+  * @example
+  * {{{
+  *  import com.amarjanica.discourse.{Credentials, DiscourseClient}
+  *  val discourseUrl = "http://127.0.0.1:80" // replace it
+  *  val credentials = Credentials(
+  *    api_username = "your_discourse_username",
+  *    api_key = "very_long_string"
+  *  )
+  *  val discourseClient = new DiscourseClient(discourseUrl, Some(credentials))
+  * }}}
+  * @param endPoint    discourse site url e.g. http://discourse.mysite.com
+  * @param credentials api_username and api_key */
+class DiscourseClient(
+  endPoint: String,
+  credentials: Option[Credentials] = None,
+  httpClient: BaseHttpClient = new BaseHttpClient(readTimeoutSec = 10, writeTimeoutSec = 10)
+) extends BaseDiscourseClient(endPoint, credentials, httpClient) {
+  val badgeApi = new BadgeApi(this)
+  val apiKeyApi = new ApiKeyApi(this)
+  val categoryApi = new CategoryApi(this)
+  val notificationApi = new NotificationApi(this)
+  val postApi = new PostApi(this)
+  val searchApi = new SearchApi(this)
+  val topicApi = new TopicApi(this)
+  val userApi = new UserApi(this)
+}
+
+class BaseDiscourseClient(
+  endPoint: String,
+  val credentials: Option[Credentials] = None,
+  httpClient: BaseHttpClient
+) {
 
   // TODO: this looks ugly, misses validations and not tested!
   private def getUrl(uri: String, queryParams: Map[String, String]) = {
@@ -44,40 +59,39 @@ class DiscourseApiClient(
 
   protected def get(uri: String) = {
     val url = getUrl(uri, Map.empty[String, String])
-    logger.debug(s"Dispatching http get $url")
     httpClient.get(
       url = url,
       requestBuilder = requestBuilder()
     )
   }
 
-  protected def get[T](uri: String, opts: Map[String, String]) =
+  def get[T](uri: String, opts: Map[String, String] = Map.empty[String, String]) =
     httpClient.get(
       url = getUrl(uri, opts),
       requestBuilder = requestBuilder()
     )
 
-  protected def post[T<:SerializableAsJson](uri: String, data: T) =
+  def post[T <: SerializableAsJson](uri: String, data: T) =
     httpClient.post(
       url = getUrl(uri, Map.empty[String, String]),
       data = data,
       requestBuilder = requestBuilder()
     )
 
-  protected def post[T<:SerializableAsJson](uri: String) =
+  def post[T <: SerializableAsJson](uri: String) =
     httpClient.post(
       url = getUrl(uri, Map.empty[String, String]),
       requestBuilder = requestBuilder()
     )
 
-  protected def put[T<:SerializableAsJson](uri: String, data: T) =
+  def put[T <: SerializableAsJson](uri: String, data: T) =
     httpClient.put(
       getUrl(uri, Map.empty[String, String]),
       data,
       requestBuilder()
     )
 
-  protected def put[T<:SerializableAsJson](
+  def put[T <: SerializableAsJson](
     uri: String,
     opts: Map[String, String],
     data: T
@@ -88,28 +102,14 @@ class DiscourseApiClient(
       requestBuilder()
     )
 
-  protected def put(uri: String) =
+  def put(uri: String) =
     httpClient.put(
       getUrl(uri, Map.empty[String, String]),
       requestBuilder()
     )
 
-  protected def delete(uri: String): Boolean =
+  def delete(uri: String): Boolean =
     httpClient.delete(getUrl(uri, Map.empty[String, String]), requestBuilder())
 
 
-  protected implicit class RichString(s: String)  {
-    import BaseHttpClient._
-    def asEither[L,R](implicit mL: Manifest[L], mR: Manifest[R]): Either[L,R] = try {
-      Right(fromJson[R](s, mR.runtimeClass.asInstanceOf[Class[R]]))
-    } catch {
-      case e: Exception =>
-        Left(fromJson[L](s, mL.runtimeClass.asInstanceOf[Class[L]]))
-    }
-
-    def as[T]( implicit m: Manifest[T]): T =
-      fromJson[T](s, m.runtimeClass.asInstanceOf[Class[T]])
-
-
-  }
 }

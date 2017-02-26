@@ -1,7 +1,7 @@
 package com.amarjanica.discourse.unit
 
 import com.amarjanica.discourse.util.SerializableAsJson
-import com.amarjanica.discourse.{BaseHttpClient, DiscourseApiClient}
+import com.amarjanica.discourse.{BaseHttpClient, DiscourseClient}
 import com.squareup.okhttp.Request
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
@@ -10,7 +10,7 @@ trait BaseSpec{
 
   def client(resource: String = "") = {
     val mockBaseHttpClient = mock(classOf[BaseHttpClient])
-    val discourseClient = new DiscourseApiClient("http://localhost:3000", None, mockBaseHttpClient)
+    val discourseClient = new DiscourseClient("http://localhost:3000", None, mockBaseHttpClient)
 
     when(mockBaseHttpClient.get(any(classOf[String]), any(classOf[Request.Builder])))
       .thenReturn(

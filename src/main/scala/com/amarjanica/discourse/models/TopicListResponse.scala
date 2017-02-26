@@ -1,10 +1,10 @@
-package com.amarjanica.discourse.api.models
+package com.amarjanica.discourse.models
 
 import java.time.OffsetDateTime
 import com.amarjanica.discourse.util.SerializableAsJson
 
 case class TopicListContainer(@JsonProperty("topic_list") topicList: TopicList)
-case class TopicList(@JsonProperty("topics") topics: Array[Topic])
+case class TopicList(@JsonProperty("topics") topics: List[Topic])
 
 case class Topic(
   @JsonProperty("id")
@@ -22,7 +22,7 @@ case class Topic(
 )
 
 case class PostStream(
-  @JsonProperty("posts") posts: Array[Post]
+  @JsonProperty("posts") posts: List[Post]
 )
 
 case class Post(

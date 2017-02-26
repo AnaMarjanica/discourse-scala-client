@@ -1,4 +1,4 @@
-package com.amarjanica.discourse.api.models
+package com.amarjanica.discourse.models
 
 import com.amarjanica.discourse.util.SerializableAsJson
 
@@ -9,7 +9,7 @@ case class CategoryContainer(category: Category)
 case class CategoryListContainer(category_list: CategoryList)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-case class CategoryList(categories: Array[Category])
+case class CategoryList(categories: List[Category])
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 case class Category(

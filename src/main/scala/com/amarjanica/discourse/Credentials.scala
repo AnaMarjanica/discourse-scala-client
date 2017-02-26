@@ -1,4 +1,4 @@
-package com.amarjanica.discourse.api.models
+package com.amarjanica.discourse
 
 import com.amarjanica.discourse.util.{HasParameters, HasQueryParameters}
 

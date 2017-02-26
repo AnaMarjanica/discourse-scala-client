@@ -1,5 +1,3 @@
-import de.johoop.jacoco4sbt.{HTMLReport, XMLReport,ScalaHTMLReport}
-
 name := "discourse-scala-client"
 
 organization := "com.amarjanica"
@@ -17,7 +15,7 @@ scalacOptions ++= List(
   "-encoding", "UTF-8"
 )
 
-scalacOptions in (Compile,doc) ++= Seq("-groups", "-implicits")
+scalacOptions in(Compile, doc) ++= Seq("-groups", "-implicits")
 
 unmanagedSourceDirectories in Compile := List((scalaSource in Compile).value)
 
@@ -25,32 +23,16 @@ unmanagedSourceDirectories in Test := List((scalaSource in Test).value)
 
 libraryDependencies ++= Seq(
   "com.squareup.okhttp" % "okhttp" % "2.7.5",
-  "org.specs2" %% "specs2-core" % "3.8.5" % "test",
-  "org.mockito" % "mockito-all" % "1.10.19" % "test",
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.7.5",
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
+  "org.specs2" %% "specs2-core" % "3.8.8" % "test",
+  "org.specs2" %% "specs2-mock" % "3.8.8" % "test",
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.8.7"
 )
 
-testOptions in Test := Seq(Tests.Filter(s => s.endsWith("Spec")))
+coverageEnabled := true
 
-jacoco.settings
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
-parallelExecution in jacoco.Config := false
-
-jacoco.reportFormats in jacoco.Config := Seq(
-  XMLReport(encoding = "utf-8"),
-  HTMLReport("utf-8"),
-  ScalaHTMLReport(withBranchCoverage = true))
-
-jacoco.excludes in jacoco.Config := Seq(
-  "assets*","views*", "*Routes*", "controllers*routes*", "controllers*Reverse*",
-  "controllers*javascript*", "controller*ref*"
-)
-
-addCommandAlias("coverage", "; jacoco:check; jacoco:cover; jacoco:report")
-
-import ReleaseTransformations._
-
+releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,

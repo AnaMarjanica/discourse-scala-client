@@ -1,12 +1,12 @@
-package com.amarjanica.discourse.api.models
+package com.amarjanica.discourse.models
 
 import java.time.OffsetDateTime
 
 case class SearchResponse (
-  topics: Array[SearchResponseTopic],
-  posts: Array[SearchResponsePost],
-  users: Array[SearchResponseUsers],
-  categories: Array[SearchResponseCategories],
+  topics: List[SearchResponseTopic],
+  posts: List[SearchResponsePost],
+  users: List[SearchResponseUsers],
+  categories: List[SearchResponseCategories],
   @JsonProperty("grouped_search_result")
   groupedSearchResult: GroupedSearchResult
 )
@@ -51,7 +51,7 @@ case class SearchResponseTopic(
   categoryId: Option[Int] = None,
   @JsonProperty("pinned_globally")
   pinnedGlobally: Boolean,
-  tags: Array[String],
+  tags: List[String],
   @JsonProperty("has_accepted_answer")
   hasAcceptedAnswer: Boolean
 )
@@ -92,9 +92,9 @@ case class GroupedSearchResult(
   @JsonProperty("more_categories")
   moreCategories: Option[Boolean] = None,
   @JsonProperty("post_ids")
-  postIds: Array[Long],
+  postIds: List[Long],
   @JsonProperty("user_ids")
-  userIds: Array[Long],
+  userIds: List[Long],
   @JsonProperty("category_ids")
-  categoryIds: Array[Long]
+  categoryIds: List[Long]
 )

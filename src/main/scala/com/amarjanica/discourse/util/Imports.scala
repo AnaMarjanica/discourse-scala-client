@@ -1,6 +1,6 @@
-package com.amarjanica.discourse.api
+package com.amarjanica.discourse.util
 
-package object models {
+trait Imports {
   /*Common imports*/
   type JsonIgnoreProperties = com.fasterxml.jackson.annotation.JsonIgnoreProperties
   type JsonProperty = com.fasterxml.jackson.annotation.JsonProperty

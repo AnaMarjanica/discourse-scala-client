@@ -1,6 +1,6 @@
 package com.amarjanica.discourse.unit
 
-import com.amarjanica.discourse.api.models.SSOUserRequest
+import com.amarjanica.discourse.models.SSOUserRequest
 import org.specs2.Specification
 
 class SSOProviderSpec extends Specification {def is =s2"""

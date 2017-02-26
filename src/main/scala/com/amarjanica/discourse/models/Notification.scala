@@ -1,11 +1,11 @@
-package com.amarjanica.discourse.api.models
+package com.amarjanica.discourse.models
 
 import java.time.OffsetDateTime
 import com.amarjanica.discourse.util.SerializableAsJson
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 case class NotificationResponse (
-  notifications: Array[Notification],
+  notifications: List[Notification],
   @JsonProperty("total_rows_notifications")
   totalRowsNotifications: Int
 ) extends SerializableAsJson

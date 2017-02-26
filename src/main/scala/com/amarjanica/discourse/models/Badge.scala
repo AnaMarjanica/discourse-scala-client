@@ -1,9 +1,27 @@
-package com.amarjanica.discourse.api.models
+package com.amarjanica.discourse.models
 
 import com.amarjanica.discourse.util.SerializableAsJson
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-case class BadgeContainer(badges: Array[Badge])
+case class Badges(
+  badges: List[Badge],
+  @JsonProperty("badge_types")
+  badgeTypes: List[BadgeType]
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+case class BadgeTypes(
+  @JsonProperty("badge_types")
+  badgeTypes: List[BadgeType]
+)
+
+case class BadgeType(
+  id: Int,
+  // Bronze, Gold, Silver
+  name: String,
+  @JsonProperty("sort_order")
+  sortOrder: Int
+)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 case class Badge(
@@ -56,6 +74,13 @@ case class CreateBadge(
   @JsonProperty("long_description")
   longDescription: Option[String] = None
 ) extends SerializableAsJson
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+case class CreateBadgeResponse(
+  @JsonProperty("badge_types")
+  badgeTypes: List[BadgeType],
+  badge: Badge
+)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 case class GrantBadge(

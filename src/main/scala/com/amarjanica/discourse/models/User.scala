@@ -1,11 +1,11 @@
-package com.amarjanica.discourse
-package api.models
+package com.amarjanica.discourse.models
 
 import java.time.OffsetDateTime
+
 import com.amarjanica.discourse.util.SerializableAsJson
 
 case class UserDetail(
-  badges: Array[Badge],
+  badges: List[Badge],
   user: User
 ) extends SerializableAsJson
 
@@ -79,11 +79,11 @@ case class User(
   @JsonProperty("enable_quoting")
   enableQuoting: Boolean,
   @JsonProperty("muted_category_ids")
-  mutedCategoryIds: Array[Int],
+  mutedCategoryIds: List[Int],
   @JsonProperty("tracked_category_ids")
-  trackedCategoryIds: Array[Int],
+  trackedCategoryIds: List[Int],
   @JsonProperty("watched_category_ids")
-  watchedCategoryIds: Array[Int],
+  watchedCategoryIds: List[Int],
   @JsonProperty("private_messages_stats")
   privateMessagesStats: Map[String, Int],
   @JsonProperty("disable_jump_reply")
@@ -92,7 +92,7 @@ case class User(
   gravatarAvatarUploadId: Option[Int] = None,
   @JsonProperty("custom_avatar_upload_id")
   custom_avatar_upload_id: Option[Int] = None,
-  groups: Array[Group]
+  groups: List[Group]
 ) extends BasicUser(id, username, avatarTemplate)
 
 case class UpdateEmail(
