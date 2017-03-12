@@ -28,11 +28,10 @@ libraryDependencies ++= Seq(
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.8.7"
 )
 
-coverageEnabled := true
+coverageEnabled in Test := true
 
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
-releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
@@ -44,6 +43,6 @@ releaseProcess := Seq[ReleaseStep](
   ReleaseStep(action = Command.process("publishSigned", _)),
   setNextVersion,
   commitNextVersion,
-  ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
-  pushChanges
+  ReleaseStep(action = Command.process("sonatypeReleaseAll", _))
+  //pushChanges
 )
